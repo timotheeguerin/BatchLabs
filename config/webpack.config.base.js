@@ -54,6 +54,7 @@ const baseConfig = {
 
         new CopyWebpackPlugin([
             { from: "./client/splash-screen/**/*" },
+            { from: "./client/genie-window/**/*" },
             { context: "app/assets", from: "**/*", to: "assets" },
         ]),
         new CommonsChunkPlugin({
@@ -72,6 +73,12 @@ const baseConfig = {
         }),
         new HtmlWebpackPlugin({
             template: "app/index.html",
+            chunksSortMode: "dependency",
+            inject: "body",
+            metadata: METADATA,
+        }),
+        new HtmlWebpackPlugin({
+            template: "app/genie_index.html",
             chunksSortMode: "dependency",
             inject: "body",
             metadata: METADATA,

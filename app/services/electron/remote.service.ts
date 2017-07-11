@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BatchClientProxyFactory } from "client/api";
 import { StorageClientProxyFactory } from "client/api";
 import { AuthenticationWindow } from "client/authentication";
+import { GenieWindow } from "client/genie-window";
 import { SplashScreen } from "client/splash-screen";
 import { remote } from "electron";
 
@@ -25,6 +26,10 @@ export class ElectronRemote {
 
     public getSplashScreen(): SplashScreen {
         return this._currentWindow().splashScreen;
+    }
+
+    public getGenieWindow(): GenieWindow {
+        return this._currentWindow().genieWindow;
     }
 
     public getAuthenticationWindow(): AuthenticationWindow {

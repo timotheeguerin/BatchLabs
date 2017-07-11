@@ -21,6 +21,12 @@ const urls = {
         dev: `file://${root}/src/client/recover-window/recover-window.html`,
         prod: `file://${root}/build/client/recover-window/recover-window.html`,
     },
+    genie: {
+        // dev: `file://${root}/src/client/genie-window/genie-window.html`,
+        // prod: `file://${root}/build/client/genie-window/genie-window.html`,
+        dev: "http://localhost:3178/genie_index.html",
+        prod: `file://${__dirname}/../../build/genie_index.html`,
+    },
     icon: __dirname + "/../assets/images/icon.ico",
 };
 

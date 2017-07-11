@@ -16,6 +16,8 @@ function createWindow() {
 
     // windows.main.debugCrash(); // Uncomment to debug any login/bootrstrap problems(Window doesn't show up)
 
+    windows.genieWindow.create();
+
     windows.main.create();
     protocol.registerStringProtocol("urn", (request, callback) => {
         // Doesn't matter how the protocol is handled; error is fine

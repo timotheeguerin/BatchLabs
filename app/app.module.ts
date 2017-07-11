@@ -11,6 +11,7 @@ import { routes } from "./app.routes";
 
 // components
 import { AppComponent } from "app/app.component";
+import { GenieComponent } from "app/components/genie";
 import { MainNavigationComponent } from "app/components/shared/main-navigation.component";
 import { AADUserDropdownComponent } from "app/components/user";
 
@@ -77,6 +78,7 @@ const modules = [
     declarations: [
         AADUserDropdownComponent,
         AppComponent,
+        GenieComponent,
         MainNavigationComponent,
     ],
     entryComponents: [
