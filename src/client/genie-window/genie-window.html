@@ -1,143 +1,240 @@
 <!DOCTYPE html>
-<style>
-    body {
-        background: #00416f;
-        width: 100vw;
-        height: 100vh;
-        font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif
-    }
-
-    body {
-        overflow: hidden;
-        user-select: none;
-    }
-
-    /*.bubbles {
-        width: 100px;
-        height: 100px;
-        margin: auto;
-        position: relative;
-    }
-
-    .flask {
-        width: 100px;
-        height: 100px;
-        margin: auto;
-    }*/
-
-    .title {
-        color: #d5d5d5;
-        margin: auto;
-        width: 100px;
-        font-size: 20px;
-        text-align: center;
-    }
-
-    #message {
-        color: #d5d5d5;
-        font-size: 12px;
-        position: absolute;
-        bottom: 5px;
-    }
-
-    /*.bubble {
-        width: 20px;
-        height: 20px;
-        background: #d5d5d5;
-        border-radius: 10px;
-        position: absolute;
-    }
-
-    .x1 {
-        left: 35px;
-        transform: scale(0.9);
-        opacity: 0.2;
-        animation: moveclouds 7s linear infinite, sideWays 4s ease-in-out infinite alternate;
-    }
-
-    .x2 {
-        left: 30px;
-        transform: scale(0.6);
-        opacity: 0.5;
-        animation: moveclouds 15s linear infinite, sideWays 5s ease-in-out infinite alternate;
-    }
-
-    .x3 {
-        left: 50px;
-        transform: scale(0.8);
-        opacity: 0.3;
-        animation: moveclouds 12s linear infinite, sideWays 4s ease-in-out infinite alternate;
-    }
-
-    .x4 {
-        left: 40px;
-        transform: scale(0.75);
-        opacity: 0.35;
-        animation: moveclouds 10s linear infinite, sideWays 2s ease-in-out infinite alternate;
-    }
-
-    .x5 {
-        left: 45px;
-        transform: scale(0.8);
-        opacity: 0.3;
-        animation: moveclouds 5s linear infinite, sideWays 1s ease-in-out infinite alternate;
-    }
-
-    @keyframes moveclouds {
-        0% {
-            top: 100px;
-            transform: scale(0.6);
-        }
-        100% {
-            top: -50px;
-            transform: scale(1.5);
-        }
-    }
-
-    @keyframes sideWays {
-        0% {
-            margin-left: 0px;
-        }
-        100% {
-            margin-left: 10px;
-        }
-    }*/
-</style>
 <html>
+<head>
+    <title>Speech Sample</title>
+    <meta charset="utf-8" />
+</head>
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px;">
+    <table width="100%">
+        <tr>
+            <td></td>
+            <td>
+                <h1 style="font-weight:500;">Speech Recognition</h1>
+                <h2 style="font-weight:500;">Microsoft Cognitive Services</h2>
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><a href="https://www.microsoft.com/cognitive-services/en-us/sign-up" target="_blank">Subscription</a>:</td>
+            <td><input id="key" type="text" size="40" value="YOUR_BING_SPEECH_API_KEY"></td>
+        </tr>
+        <tr>
+            <td align="right">Laguage:</td>
+            <td align="left">
+                <select id="languageOptions">
+                    <option value="zh-CN">Chinese - CN</option>
+                    <option value="en-GB">English - GB</option>
+                    <option value="en-US" selected="selected">English - US</option>
+                    <option value="fr-FR">French - FR</option>
+                    <option value="de-DE">German - DE</option>
+                    <option value="it-IT">Italian - IT</option>
+                    <option value="es-ES">Spanish - ES</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Format:</td>
+            <td align="left">
+                <select id="formatOptions">
+                    <option value="Simple" selected="selected">Simple Result</option>
+                    <option value="Detailed">Detailed Result</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button id="startBtn" disabled="disabled">Start</button>
+                <button id="stopBtn" disabled="disabled">Stop</button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Current hypothesis: <span id="hypothesisDiv"></span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <textarea id="phraseDiv" style="width:500px;height:200px"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Status: <span id="statusDiv"></span></td>
+        </tr>
+    </table>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const message = document.getElementById("message");
-        const {ipcRenderer} = require("electron");
-        ipcRenderer.on("update-message", (event, arg) => {
-            message.innerHTML = arg;
-        })
-    })
+    <!-- The SDK has a dependency on requirejs (http://requirejs.org/). -->
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>-->
+    <script>
+        // Special handling to let the sample work when loaded directly from file system.
+        if (window.location.protocol == "file:") {
+            document.write('\<script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js">\<\/script>');
+        }
+    </script>
 
-</script>
+    <!-- SDK REFERENCE -->
+    <!--<script src="../../distrib\speech.browser.sdk-min.js"></script>-->
+    <script src="C:\Dev\SpeechToText-WebSockets-Javascript\distrib\speech.browser.sdk-min.js"></script>
 
-<body>
-    <!--<div class="bubbles">
-        <div class="bubble x1"></div>
-        <div class="bubble x2"></div>
-        <div class="bubble x3"></div>
-        <div class="bubble x4"></div>
-        <div class="bubble x5"></div>
-    </div>-->
+    <!-- SDK USAGE -->
+    <script>
+        // On doument load resolve the SDK dependecy
+        function Initialize(onComplete) {
+            require(["Speech.Browser.Sdk"], function(SDK) {
+                onComplete(SDK);
+            });
+        }
 
-    <!--<div class="flask">
-        <img src="./flask.svg"></img>
-    </div>-->
+        // Setup the recongizer
+        function RecognizerSetup(SDK, recognitionMode, language, format, subscriptionKey) {
+            var recognizerConfig = new SDK.RecognizerConfig(
+                new SDK.SpeechConfig(
+                    new SDK.Context(
+                        new SDK.OS(navigator.userAgent, "Browser", null),
+                        new SDK.Device("SpeechSample", "SpeechSample", "1.0.00000"))),
+                recognitionMode, // SDK.RecognitionMode.Interactive  (Options - Interactive/Conversation/Dictation>)
+                language, // Supported laguages are specific to each recognition mode. Refer to docs.
+                format); // SDK.SpeechResultFormat.Simple (Options - Simple/Detailed)
 
-    <div class="loading-icon">
-    </div>
+            // Alternatively use SDK.CognitiveTokenAuthentication(fetchCallback, fetchOnExpiryCallback) for token auth
+            var authentication = new SDK.CognitiveSubscriptionKeyAuthentication(subscriptionKey);
 
-    <div class="title">
-        Batch Genie
-    </div>
+            return SDK.CreateRecognizer(recognizerConfig, authentication);
+        }
 
-    <div id="message">
-    </div>
+        // Start the recognition
+        function RecognizerStart(SDK, recognizer) {
+            recognizer.Recognize((event) => {
+                /*
+                 Alternative syntax for typescript devs.
+                 if (event instanceof SDK.RecognitionTriggeredEvent)
+                */
+                switch (event.Name) {
+                    case "RecognitionTriggeredEvent" :
+                        UpdateStatus("Initializing");
+                        break;
+                    case "ListeningStartedEvent" :
+                        UpdateStatus("Listening");
+                        break;
+                    case "RecognitionStartedEvent" :
+                        UpdateStatus("Listening_Recognizing");
+                        break;
+                    case "SpeechStartDetectedEvent" :
+                        UpdateStatus("Listening_DetectedSpeech_Recognizing");
+                        console.log(JSON.stringify(event.Result)); // check console for other information in result
+                        break;
+                    case "SpeechHypothesisEvent" :
+                        UpdateRecognizedHypothesis(event.Result.Text);
+                        console.log(JSON.stringify(event.Result)); // check console for other information in result
+                        break;
+                    case "SpeechEndDetectedEvent" :
+                        OnSpeechEndDetected();
+                        UpdateStatus("Processing_Adding_Final_Touches");
+                        console.log(JSON.stringify(event.Result)); // check console for other information in result
+                        break;
+                    case "SpeechSimplePhraseEvent" :
+                        UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
+                        break;
+                    case "SpeechDetailedPhraseEvent" :
+                        UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
+                        break;
+                    case "RecognitionEndedEvent" :
+                        OnComplete();
+                        UpdateStatus("Idle");
+                        console.log(JSON.stringify(event)); // Debug information
+                        break;
+                }
+            })
+            .On(() => {
+                // The request succeeded. Nothing to do here.
+            },
+            (error) => {
+                console.error(error);
+            });
+        }
+
+        // Stop the Recognition.
+        function RecognizerStop(SDK, recognizer) {
+            // recognizer.AudioSource.Detach(audioNodeId) can be also used here. (audioNodeId is part of ListeningStartedEvent)
+            recognizer.AudioSource.TurnOff();
+        }
+    </script>
+
+    <!-- Browser Hooks -->
+    <script>
+        var startBtn, stopBtn, hypothesisDiv, phraseDiv, statusDiv, key, languageOptions, formatOptions;
+        var SDK;
+        var recognizer;
+        var previousSubscriptionKey;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            createBtn = document.getElementById("createBtn");
+            startBtn = document.getElementById("startBtn");
+            stopBtn = document.getElementById("stopBtn");
+            phraseDiv = document.getElementById("phraseDiv");
+            hypothesisDiv = document.getElementById("hypothesisDiv");
+            statusDiv = document.getElementById("statusDiv");
+            key = document.getElementById("key");
+            languageOptions = document.getElementById("languageOptions");
+            formatOptions = document.getElementById("formatOptions");
+
+            languageOptions.addEventListener("change", function () {
+                Setup();
+            });
+
+            formatOptions.addEventListener("change", function () {
+                Setup();
+            });
+
+            startBtn.addEventListener("click", function () {
+                if (!recognizer || previousSubscriptionKey != key.value) {
+                    previousSubscriptionKey = key.value;
+                    Setup();
+                }
+
+                hypothesisDiv.innerHTML = "";
+                phraseDiv.innerHTML = "";
+                RecognizerStart(SDK, recognizer);
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            });
+
+            stopBtn.addEventListener("click", function () {
+                RecognizerStop(SDK);
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            });
+
+            Initialize(function (speechSdk) {
+                SDK = speechSdk;
+                startBtn.disabled = false;
+            });
+        });
+
+        function Setup() {
+            recognizer = RecognizerSetup(SDK, SDK.RecognitionMode.Interactive, languageOptions.value, SDK.SpeechResultFormat[formatOptions.value], key.value);
+        }
+
+        function UpdateStatus(status) {
+            statusDiv.innerHTML = status;
+        }
+
+        function UpdateRecognizedHypothesis(text) {
+            hypothesisDiv.innerHTML = text;
+        }
+
+        function OnSpeechEndDetected() {
+            stopBtn.disabled = true;
+        }
+
+        function UpdateRecognizedPhrase(json) {
+             phraseDiv.innerHTML = json;
+        }
+
+        function OnComplete() {
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        }
+    </script>
 </body>
-
 </html>

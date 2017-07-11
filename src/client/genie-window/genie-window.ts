@@ -1,4 +1,5 @@
 import { BrowserWindow } from "electron";
+import { BatchClientProxyFactory, StorageClientProxyFactory } from "../api";
 import { Constants } from "../client-constants";
 import { UniqueWindow } from "../core";
 
@@ -36,6 +37,11 @@ export class GenieWindow extends UniqueWindow {
         window.webContents.once("dom-ready", () => {
             this._sendMessageToWindow();
         });
+
+        const anyWindow = window as any;
+        anyWindow.batchClientFactory = new BatchClientProxyFactory();
+        anyWindow.storageClientFactory = new StorageClientProxyFactory();
+
         return window;
     }
 

@@ -38,7 +38,6 @@ export class MainWindow extends UniqueWindow {
         anyWindow.storageClientFactory = new StorageClientProxyFactory();
         anyWindow.logger = renderLogger;
         anyWindow.splashScreen = windows.splashScreen;
-        anyWindow.genieWindow = windows.genieWindow;
         anyWindow.authenticationWindow = windows.authentication;
 
         // Open the DevTools.
