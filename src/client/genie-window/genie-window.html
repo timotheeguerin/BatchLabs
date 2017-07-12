@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Speech Sample</title>
     <meta charset="utf-8" />
 </head>
+
 <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px;">
+    <style>
+        .spinner {
+            width: 40px;
+            height: 40px;
+
+            position: relative;
+            margin: 100px auto;
+        }
+
+        .double-bounce1,
+        .double-bounce2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #333;
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+            animation: sk-bounce 2.0s infinite ease-in-out;
+        }
+
+        .double-bounce2 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        @-webkit-keyframes sk-bounce {
+            0%,
+            100% {
+                -webkit-transform: scale(0.0)
+            }
+            50% {
+                -webkit-transform: scale(1.0)
+            }
+        }
+
+        @keyframes sk-bounce {
+            0%,
+            100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            }
+            50% {
+                transform: scale(1.0);
+                -webkit-transform: scale(1.0);
+            }
+        }
+</style>
+
+<!-- The SDK has a dependency on requirejs (http://requirejs.org/). -->
+     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script> -->
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+
     <table width="100%">
         <tr>
             <td></td>
@@ -63,24 +124,15 @@
         </tr>
     </table>
 
-    <!-- The SDK has a dependency on requirejs (http://requirejs.org/). -->
-    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>-->
-    <script>
-        // Special handling to let the sample work when loaded directly from file system.
-        if (window.location.protocol == "file:") {
-            document.write('\<script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js">\<\/script>');
-        }
-    </script>
-
     <!-- SDK REFERENCE -->
     <!--<script src="../../distrib\speech.browser.sdk-min.js"></script>-->
-    <script src="C:\Dev\SpeechToText-WebSockets-Javascript\distrib\speech.browser.sdk-min.js"></script>
+     <!-- <script src=" C:\Dev\SpeechToText-WebSockets-Javascript\distrib\speech.browser.sdk-min.js"></script> -->
 
     <!-- SDK USAGE -->
-    <script>
+     <script>
         // On doument load resolve the SDK dependecy
         function Initialize(onComplete) {
-            require(["Speech.Browser.Sdk"], function(SDK) {
+            require(["Speech.Browser.Sdk"], function (SDK) {
                 onComplete(SDK);
             });
         }
@@ -110,47 +162,47 @@
                  if (event instanceof SDK.RecognitionTriggeredEvent)
                 */
                 switch (event.Name) {
-                    case "RecognitionTriggeredEvent" :
+                    case "RecognitionTriggeredEvent":
                         UpdateStatus("Initializing");
                         break;
-                    case "ListeningStartedEvent" :
+                    case "ListeningStartedEvent":
                         UpdateStatus("Listening");
                         break;
-                    case "RecognitionStartedEvent" :
+                    case "RecognitionStartedEvent":
                         UpdateStatus("Listening_Recognizing");
                         break;
-                    case "SpeechStartDetectedEvent" :
+                    case "SpeechStartDetectedEvent":
                         UpdateStatus("Listening_DetectedSpeech_Recognizing");
                         console.log(JSON.stringify(event.Result)); // check console for other information in result
                         break;
-                    case "SpeechHypothesisEvent" :
+                    case "SpeechHypothesisEvent":
                         UpdateRecognizedHypothesis(event.Result.Text);
                         console.log(JSON.stringify(event.Result)); // check console for other information in result
                         break;
-                    case "SpeechEndDetectedEvent" :
+                    case "SpeechEndDetectedEvent":
                         OnSpeechEndDetected();
                         UpdateStatus("Processing_Adding_Final_Touches");
                         console.log(JSON.stringify(event.Result)); // check console for other information in result
                         break;
-                    case "SpeechSimplePhraseEvent" :
+                    case "SpeechSimplePhraseEvent":
                         UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
                         break;
-                    case "SpeechDetailedPhraseEvent" :
+                    case "SpeechDetailedPhraseEvent":
                         UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
                         break;
-                    case "RecognitionEndedEvent" :
+                    case "RecognitionEndedEvent":
                         OnComplete();
                         UpdateStatus("Idle");
                         console.log(JSON.stringify(event)); // Debug information
                         break;
                 }
             })
-            .On(() => {
-                // The request succeeded. Nothing to do here.
-            },
-            (error) => {
-                console.error(error);
-            });
+                .On(() => {
+                    // The request succeeded. Nothing to do here.
+                },
+                (error) => {
+                    console.error(error);
+                });
         }
 
         // Stop the Recognition.
@@ -161,7 +213,7 @@
     </script>
 
     <!-- Browser Hooks -->
-    <script>
+     <script>
         var startBtn, stopBtn, hypothesisDiv, phraseDiv, statusDiv, key, languageOptions, formatOptions;
         var SDK;
         var recognizer;
@@ -228,7 +280,7 @@
         }
 
         function UpdateRecognizedPhrase(json) {
-             phraseDiv.innerHTML = json;
+            phraseDiv.innerHTML = json;
         }
 
         function OnComplete() {
@@ -236,5 +288,12 @@
             stopBtn.disabled = true;
         }
     </script>
+    <!-- <script>
+        // Special handling to let the sample work when loaded directly from file system.
+        if (window.location.protocol == "file:") {
+            document.write('\<script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js">\<\/script>');
+        }
+    </script>
 </body>
+
 </html>
