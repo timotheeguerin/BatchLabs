@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ServerError } from "app/models";
 import { NcjTemplateService, PythonRpcService } from "app/services";
+
 import "./submit-market-application.scss";
 export enum Modes { None, PoolNJob, PoolOJob, Pool }
 
@@ -22,6 +23,7 @@ export class SubmitMarketApplicationComponent {
     private modeState = Modes.None;
     private applicationId;
     private actionId;
+    private icon;
     private jobTemplate;
     private poolTemplate;
     private pickedPool = new FormControl(null);
@@ -39,11 +41,15 @@ export class SubmitMarketApplicationComponent {
         this.route.params.subscribe((params) => {
             this.applicationId = params["applicationId"];
             this.actionId = params["actionId"];
+            console.log("rout param", params);
             this.templateService.getTemplates(this.applicationId, this.actionId).subscribe((templates) => {
                 this.jobTemplate = templates.job;
                 this.poolTemplate = templates.pool;
                 this.title = `Run ${this.actionId} from ${this.applicationId}`;
                 this._createForms();
+            });
+            this.templateService.getApplication(this.applicationId).subscribe((application) => {
+                this.icon = application.icon;
             });
         });
     }
@@ -140,6 +146,28 @@ export class SubmitMarketApplicationComponent {
 
     private _getContainerFromFileGroup(fileGroup: string) {
         return fileGroup && `fgrp-${fileGroup}`;
+    }
+    private _isJobComplete(){
+        let status = true;
+        for (let param of Object.keys(this.form.controls)) {
+            if (this._getParameters(this.jobTemplate).includes(param)){
+                if (!this.form.controls[param].value){
+                    status = false;
+                }
+            }
+        }
+        return status;
+    }
+    private _isPoolComplete(){
+        let status = true;
+        for (let param of Object.keys(this.form.controls)) {
+            if (this._getParameters(this.poolTemplate).includes(param)){
+                if (!this.form.controls[param].value){
+                    status = false;
+                }
+            }
+        }
+        return status;
     }
     private _getType(param){
         if (this._getParameters(this.jobTemplate).includes(param)){

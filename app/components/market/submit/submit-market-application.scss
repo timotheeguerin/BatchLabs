@@ -17,7 +17,6 @@ bl-submit-market-application {
         width: 700px;
         color: #ffffff;
         background-color: #3e81b0;
-
     }
     .title {
         margin: 10px;
@@ -33,7 +32,12 @@ bl-submit-market-application {
             margin-bottom: 20px;
         }
     }
-
+    .sidemenu {
+        margin: 10px;
+        margin-right: 20px;
+        float: left;
+        width: 200px;
+    }
     bl-button.submit-job {
         color: $whitesmoke;
         width: 100px;

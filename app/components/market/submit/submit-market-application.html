@@ -1,4 +1,82 @@
 <bl-scrollable>
+
+    <div class="sidemenu">
+        <div>
+            <h2 style="border-style: solid;" > Application </h2>
+            <div>
+                <img class="logo" [src]="icon" height="30" width="30" alt="Smiley face"><span [title]="applicationId">{{applicationId}}</span>
+            </div>
+        </div>
+        <div>
+            <h2 style="border-style: solid;"> Action </h2>
+            <div>
+                {{actionId}}
+            </div>
+        </div>
+        <div *ngIf="modeState != modes.None">
+            <h2 style="border-style: solid;" > Mode </h2>
+            <div>
+                {{modes[modeState]}}
+            </div>
+        </div>
+
+        <div *ngIf="modeState == modes.PoolNJob || modeState == modes.Pool">
+            <div *ngIf="form?.controls.poolName?.value && form?.controls.numberNodes?.value && form?.controls.vmSize?.value">
+                <h2 style="border-style: solid;" > Pool </h2>
+                <div> Pool: {{form.controls.poolName.value}} </div>
+                <div> Nodes: {{form.controls.numberNodes.value}} </div>
+                <div> Type: {{form.controls.vmSize.value}} </div>
+            </div>
+        </div>
+
+        <div *ngIf="modeState == modes.PoolOJob">
+            <div *ngIf="pickedPool?.value">
+                <h2 style="border-style: solid;" > Pool </h2>
+                <div> Pool: {{pickedPool.value.poolId}} </div>
+            </div>
+        </div>
+
+        <div *ngIf="modeState == modes.PoolNJob || modeState == modes.PoolOJob">
+            <div *ngIf="_isJobComplete()">
+                <h2 style="border-style: solid;" > Job </h2>
+                 <div *ngFor="let param of _getParameters(jobTemplate)">
+                     {{param}}: {{form.controls[param].value}}
+                 </div>
+            </div>
+        </div>
+
+        <div *ngIf = "modeState == modes.PoolNJob">
+            <div *ngIf = "_isJobComplete() && _isPoolComplete()">
+                <h2 style="border-style: solid;" > Cost </h2>
+                <div>
+                    Cost: $10
+                </div>
+                <button style="width:100px;background-color:#3e81b0;" (click) = "_onSubmit()" type="button"  md-raised-button>Submit</button>
+            </div>
+        </div>
+
+        <div *ngIf = "modeState == modes.PoolOJob">
+            <div *ngIf = "_isJobComplete() && pickedPool?.value">
+                <h2 style="border-style: solid;" > Cost </h2>
+                <div>
+                    Cost: $15
+                </div>
+                <button style="width:100px;background-color:#3e81b0;" (click) = "_onSubmit()" type="button"  md-raised-button>Submit</button>
+            </div>
+        </div>
+
+        <div *ngIf = "modeState == modes.Pool">
+            <div *ngIf = "_isPoolComplete()">
+                <h2 style="border-style: solid;" > Cost </h2>
+                <div>
+                    Cost: $20
+                </div>
+                <button style="width:100px;background-color:#3e81b0;" (click) = "_onSubmit()" type="button"  md-raised-button>Submit</button>
+            </div>
+
+        </div>
+
+    </div>
     <div *ngIf="modeState == modes.None">
         <bl-complex-form [formGroup]="form" [hideFooter]="true">
             <bl-form-page main-form-page [title]="title">
@@ -211,7 +289,4 @@
             </bl-form-page>
         </bl-complex-form>
     </div>
-
-    <button *ngIf="modeState != modes.None" style="width:100px;background-color:#3e81b0;" (click) = "_onSubmit()" type="button"  md-raised-button>Submit</button>
-
 </bl-scrollable>
