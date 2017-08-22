@@ -1,6 +1,9 @@
 language: node_js
 dist: trusty
 sudo: false
+os:
+  - osx
+  - linux
 node_js:
     - '6.9.4'
 python:
