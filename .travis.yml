@@ -4,6 +4,15 @@ sudo: false
 os:
   - osx
   - linux
+addons:
+  apt:
+    packages:
+      - libgnome-keyring-dev
+      - icnsutils
+      - graphicsmagick
+      - xz-utils
+      - rpm
+      - bsdtar
 node_js:
     - '6.9.4'
 python:
