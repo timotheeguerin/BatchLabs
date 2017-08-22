@@ -9,6 +9,12 @@ cd $(dirname $0)/../..
 # Normal build
 npm run build -s
 
+# Run the test
+npm run test -s
+
+# Run the lint
+npm run lint -s
+
 # Only run prod build if on a branch build or PR for stable
 if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; then
 	npm run -s build:prod
@@ -16,8 +22,7 @@ if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; 
     npm run package
 fi
 
-# Run the test
-npm run test -s
-
-# Run the lint
-npm run lint -s
+# Only package if on stable branch
+if [ "${TRAVIS_BRANCH}" = "stable" ] then 
+    npm run package
+fi
