@@ -30,7 +30,9 @@ install:
   - pip install -r python/requirements.txt
 
 build_script:
-    - npm run build-and-pack
+    - npm run -s build:prod
+    - npm run -s build-python
+    - npm run -s package --win nsis
 
 test_script:
     # - npm run test -s
