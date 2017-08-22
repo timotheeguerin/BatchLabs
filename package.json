@@ -37,7 +37,7 @@
     "tslint": "tslint -c tslint.json \"app/**/*.ts\" \"src/**/*.ts\" \"test/**/*.ts\" \"./*.js\" \"config/**/*.js\"",
     "stylelint": "stylelint --syntax scss \"app/**/*.scss\"",
     "lint": "npm run -s tslint && npm run -s stylelint",
-    "package": "build --win appx",
+    "package": "build",
     "build-and-pack": "npm run -s build:prod && npm run -s build-python && npm run -s package --dir"
   },
   "license": "MIT",
