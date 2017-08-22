@@ -11,7 +11,9 @@ npm run build -s
 
 # Only run prod build if on a branch build or PR for stable
 if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; then
-	npm run build:prod
+	npm run -s build:prod
+    npm run -s build-python
+    npm run package
 fi
 
 # Run the test
