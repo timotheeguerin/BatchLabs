@@ -9,7 +9,7 @@ install:
     - yarn install --force
 
 build_script:
-    - npm run build -s
+    - scripts/install/install-windows.bat
 
 test_script:
     # - npm run test -s
