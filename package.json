@@ -87,7 +87,6 @@
     },
     "linux": {
       "target": [
-        "deb",
         "AppImage"
       ]
     },
