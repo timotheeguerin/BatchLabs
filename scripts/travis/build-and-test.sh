@@ -23,6 +23,6 @@ if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; 
 fi
 
 # Only package if on stable branch
-if [ "${TRAVIS_BRANCH}" = "stable" ] then 
+if [ "${TRAVIS_BRANCH}" = "stable" ]; then 
     npm run package
 fi
