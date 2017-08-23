@@ -7,9 +7,6 @@ echo "=======  Starting build-and-test.sh  =====================================
 cd $(dirname $0)/../..
 
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then # Only run the CI checks on the linux build
-    # Normal build
-    npm run build -s
-
     # Run the test
     npm run test -s
 
@@ -21,10 +18,15 @@ fi
 if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; then
 	npm run -s build:prod
     npm run -s build-python
-    npm run package
+    npm run package # TODO remove this
+else
+    if [[ $TRAVIS_OS_NAME == 'linux' ]]; then # Only run the CI checks on the linux build
+        # Normal build
+        npm run build -s
+    fi
 fi
 
 # Only package if on stable branch
-if [ "${TRAVIS_BRANCH}" = "stable" ]; then
+if [ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ "${TRAVIS_BRANCH}" = "stable" ]; then
     npm run package
 fi
