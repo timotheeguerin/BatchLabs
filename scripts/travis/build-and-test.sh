@@ -6,14 +6,16 @@ echo "=======  Starting build-and-test.sh  =====================================
 # Go to project dir
 cd $(dirname $0)/../..
 
-# Normal build
-npm run build -s
+if [[ $TRAVIS_OS_NAME == 'linux' ]]; then # Only run the CI checks on the linux build
+    # Normal build
+    npm run build -s
 
-# Run the test
-npm run test -s
+    # Run the test
+    npm run test -s
 
-# Run the lint
-npm run lint -s
+    # Run the lint
+    npm run lint -s
+fi
 
 # Only run prod build if on a branch build or PR for stable
 if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; then
@@ -23,6 +25,6 @@ if [ "${TRAVIS_PULL_REQUEST}" = "false" ] || [ "${TRAVIS_BRANCH}" = "stable" ]; 
 fi
 
 # Only package if on stable branch
-if [ "${TRAVIS_BRANCH}" = "stable" ]; then 
+if [ "${TRAVIS_BRANCH}" = "stable" ]; then
     npm run package
 fi
