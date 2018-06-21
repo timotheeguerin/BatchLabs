@@ -1,5 +1,6 @@
 # BatchLabs
 [![Build Status](https://travis-ci.org/Azure/BatchLabs.svg?branch=master)](https://travis-ci.org/Azure/BatchLabs)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftimotheeguerin%2FBatchLabs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftimotheeguerin%2FBatchLabs?ref=badge_shield)
 
 **Note: BatchLabs is in beta. We don't provide any installer/packaged binaries as of now. You will need to build this app yourself.**
 
@@ -128,3 +129,6 @@ npm run dev-electron
 
 Batch labs is licensed under MIT [See license](LICENSE)
 Some icons are under Creative Commons Attribution-ShareAlike 3.0 Unported [See license](app/assets/images/logos/LICENSE)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftimotheeguerin%2FBatchLabs.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftimotheeguerin%2FBatchLabs?ref=badge_large)
